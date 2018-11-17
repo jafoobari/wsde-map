@@ -20,7 +20,7 @@ var markerStyle = L.geoJson(null, {
    }
 });
 
-var wsdeLayer = omnivore.csv('/locations.csv', null, markerStyle)
+var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
   .on("ready", function() {
     var markers = L.markerClusterGroup();
     markers.addLayer(wsdeLayer);
