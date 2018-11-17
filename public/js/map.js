@@ -4,13 +4,16 @@
 
 var darkmatter = L.tileLayer.provider('CartoDB.DarkMatterNoLabels'),
     positron = L.tileLayer.provider('CartoDB.PositronNoLabels'),
+    income = L.tileLayer.provider('JusticeMap.income'),
+    black = L.tileLayer.provider('JusticeMap.black'),
+    nonwhite = L.tileLayer.provider('JusticeMap.nonWhite')
     lines = L.tileLayer.provider('Stamen.TonerLines'),
     labels = L.tileLayer.provider('Stamen.TonerLabels');
 
 
 var mki = L.icon.mapkey({
   icon:"adit",
-  color:"teal",
+  color:"DarkRed",
   background:false,
   boxShadow:false,
 })
@@ -32,12 +35,14 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
     var mymap = L.map('mapid', {
         center: [35.59841484754639, -106.73698425292969],
         zoom: 3,
-        layers: [positron, lines, labels, markers]
+        layers: [positron, markers]
     });
 
     var overlayMaps = {
         "Lines": lines,
         "Labels": labels,
+        "Black": black,
+        "POC": nonwhite,
         "WSDEs": markers
     };
 
@@ -50,11 +55,3 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
     L.control.layers(baseMaps, overlayMaps).addTo(mymap);
 
   });
-
-
-
-
-
-
-
-// L.tileLayer.provider('CartoDB.Positron').addTo(mymap);
