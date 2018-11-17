@@ -1,14 +1,18 @@
 //For local development need to run a local webserver to load the CSV file. Use python3 -m http.server 8888
 
-var mymap = L.map('mapid').setView([35.59841484754639, -106.73698425292969], 3);
+// var mymap = L.map('mapid').setView([35.59841484754639, -106.73698425292969], 3);
 
-L.tileLayer.provider('CartoDB.DarkMatter').addTo(mymap);
+var darkmatter = L.tileLayer.provider('CartoDB.DarkMatterNoLabels'),
+    positron = L.tileLayer.provider('CartoDB.PositronNoLabels'),
+    lines = L.tileLayer.provider('Stamen.TonerLines'),
+    labels = L.tileLayer.provider('Stamen.TonerLabels');
+
 
 var mki = L.icon.mapkey({
   icon:"adit",
+  color:"teal",
   background:false,
   boxShadow:false,
-  hoverCSS:'background-color:#992b00'
 })
 
 var markerStyle = L.geoJson(null, {
@@ -24,5 +28,33 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
   .on("ready", function() {
     var markers = L.markerClusterGroup();
     markers.addLayer(wsdeLayer);
-    markers.addTo(mymap);
+    // markers.addTo(mymap);
+    var mymap = L.map('mapid', {
+        center: [35.59841484754639, -106.73698425292969],
+        zoom: 3,
+        layers: [positron, lines, labels, markers]
+    });
+
+    var overlayMaps = {
+        "Lines": lines,
+        "Labels": labels,
+        "WSDEs": markers
+    };
+
+    var baseMaps = {
+        "Light": positron,
+        "Dark": darkmatter
+
+    };
+
+    L.control.layers(baseMaps, overlayMaps).addTo(mymap);
+
   });
+
+
+
+
+
+
+
+// L.tileLayer.provider('CartoDB.Positron').addTo(mymap);
