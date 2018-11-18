@@ -34,8 +34,8 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
     // markers.addTo(mymap);
     var mymap = L.map('mapid', {
         center: [35.59841484754639, -106.73698425292969],
-        zoom: 3,
-        layers: [positron, markers]
+        zoom: 4,
+        layers: [positron, lines, labels, markers]
     });
 
     var overlayMaps = {
