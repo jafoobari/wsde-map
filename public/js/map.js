@@ -89,6 +89,8 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
         var mymap = L.map('mapid', {
             center: [35.59841484754639, -106.73698425292969],
             zoom: 4,
+            minZoom: 3,
+            maxZoom: 14,
             attributionControl: false, //Just leaving for development
             layers: [darkmatter, markers]
         });
