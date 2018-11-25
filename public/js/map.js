@@ -1,7 +1,5 @@
 //For local development need to run a local webserver to load the CSV file. Use python3 -m http.server 8888
 
-// var mymap = L.map('mapid').setView([35.59841484754639, -106.73698425292969], 3);
-
 var darkmatter = L.tileLayer.provider('CartoDB.DarkMatter'),
     positron = L.tileLayer.provider('CartoDB.Positron'),
     // income = L.tileLayer.provider('JusticeMap.income'),
@@ -18,7 +16,7 @@ var darkmatter = L.tileLayer.provider('CartoDB.DarkMatter'),
     blackBlock = L.tileLayer('http://www.justicemap.org/tile/{size}/black/{z}/{x}/{y}.png', {
         attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
     	  size: 'block',
-        opacity: 0.6,
+        opacity: 0.4,
     	  bounds: [[14, -180], [72, -56]]
     }),
     blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
@@ -81,11 +79,22 @@ var blackBlockLegend = L.control.htmllegend({
     }]
 });
 
+var markers = L.markerClusterGroup();
+
+var controlSearch = new L.Control.Search({
+    propertyName: 'Title',
+    layer: markers,
+    initial: false,
+    firstTipSubmit: true,
+    zoom: 12,
+    position: "topcenter",
+    collapsed: false,
+    marker: false
+});
+
 var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
     .on("ready", function() {
-        var markers = L.markerClusterGroup();
         markers.addLayer(wsdeLayer);
-        // markers.addTo(mymap);
         var mymap = L.map('mapid', {
             center: [35.59841484754639, -106.73698425292969],
             zoom: 4,
@@ -112,7 +121,14 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
 
         };
 
+        controlSearch.on('search:locationfound', function(event) {
+            markers.zoomToShowLayer(event.layer, function() {
+              event.layer.openPopup()
+            });
+        });
+
         L.control.layers(baseMaps, overlayMaps).addTo(mymap);
         mymap.addControl(blackBlockGroupsLegend);
         mymap.addControl(blackBlockLegend);
+        mymap.addControl(controlSearch);
     });
