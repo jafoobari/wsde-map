@@ -2,26 +2,28 @@
 
 var darkmatter = L.tileLayer.provider('CartoDB.DarkMatter'),
     positron = L.tileLayer.provider('CartoDB.Positron'),
+    toner = L.tileLayer.provider('Stamen.Toner'),
+    tonerLite = L.tileLayer.provider('Stamen.TonerLite'),
     // income = L.tileLayer.provider('JusticeMap.income'),
     // black = L.tileLayer.provider('JusticeMap.black'),
     // nonwhite = L.tileLayer.provider('JusticeMap.nonWhite'),
     // lines = L.tileLayer.provider('Stamen.TonerLines'),
     // labels = L.tileLayer.provider('Stamen.TonerLabels'),
-    blackBlockGroups = L.tileLayer('http://www.justicemap.org/tile/{size}/black/{z}/{x}/{y}.png', {
-        attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
-    	  size: 'bg',
-        opacity: 0.6,
-    	  bounds: [[14, -180], [72, -56]]
-    }),
+    // blackBlockGroups = L.tileLayer('http://www.justicemap.org/tile/{size}/black/{z}/{x}/{y}.png', {
+    //     attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
+    // 	  size: 'bg',
+    //     opacity: 0.6,
+    // 	  bounds: [[14, -180], [72, -56]]
+    // }),
+    // blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
+    //     attribution: '',
+    //     opacity: 0.7,
+    // 	  bounds: [[14, -180], [72, -56]]
+    // }),
     blackBlock = L.tileLayer('http://www.justicemap.org/tile/{size}/black/{z}/{x}/{y}.png', {
         attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
     	  size: 'block',
         opacity: 0.4,
-    	  bounds: [[14, -180], [72, -56]]
-    }),
-    blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
-        attribution: '',
-        opacity: 0.7,
     	  bounds: [[14, -180], [72, -56]]
     });
 
@@ -55,17 +57,17 @@ var legendHtml = `<div style="font-size: 0.74em; width: auto; min-height: 112px;
    &nbsp;&nbsp;&nbsp;&nbsp;</span><span> 79 - 100%</span></div>
 </div>`;
 
-var blackBlockGroupsLegend = L.control.htmllegend({
-  position: 'bottomright',
-  // collapsedOnInit: true,
-  // defaultOpacity: 0.1,
-  disableVisibilityControls: true,
-  legends: [{
-            name: 'Black (race) </br> pop. density',
-            layer: blackBlockGroups,
-            elements: [{ html: legendHtml }]
-    }]
-});
+// var blackBlockGroupsLegend = L.control.htmllegend({
+//   position: 'bottomright',
+//   // collapsedOnInit: true,
+//   // defaultOpacity: 0.1,
+//   disableVisibilityControls: true,
+//   legends: [{
+//             name: 'Black (race) </br> pop. density',
+//             layer: blackBlockGroups,
+//             elements: [{ html: legendHtml }]
+//     }]
+// });
 
 var blackBlockLegend = L.control.htmllegend({
   position: 'bottomright',
@@ -107,18 +109,19 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
         var overlayMaps = {
             // "Lines": lines,
             // "Labels": labels,
-            "Black (race) block groups": blackBlockGroups,
-            "Black (race) blocks": blackBlock,
-            "ENHANCE!!": blackDot,
+            // "Black (race) block groups": blackBlockGroups,
+            "Black (race)": blackBlock,
+            // "ENHANCE!!": blackDot,
             // "POC": nonwhite,
             // "income": income,
-            "WSDEs": markers
+            // "WSDEs": markers
         };
 
         var baseMaps = {
+            "Toner": toner,
+            "Toner Lite": tonerLite,
             "Light": positron,
             "Dark": darkmatter
-
         };
 
         controlSearch.on('search:locationfound', function(event) {
@@ -128,7 +131,7 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
         });
 
         L.control.layers(baseMaps, overlayMaps).addTo(mymap);
-        mymap.addControl(blackBlockGroupsLegend);
+        // mymap.addControl(blackBlockGroupsLegend);
         mymap.addControl(blackBlockLegend);
         mymap.addControl(controlSearch);
     });
