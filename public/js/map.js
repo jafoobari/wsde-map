@@ -91,6 +91,7 @@ var controlSearch = new L.Control.Search({
     zoom: 12,
     position: "topcenter",
     collapsed: false,
+    autoCollapse: true,
     marker: false
 });
 
