@@ -15,11 +15,11 @@ var darkmatter = L.tileLayer.provider('CartoDB.DarkMatter'),
     //     opacity: 0.6,
     // 	  bounds: [[14, -180], [72, -56]]
     // }),
-    // blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
-    //     attribution: '',
-    //     opacity: 0.7,
-    // 	  bounds: [[14, -180], [72, -56]]
-    // }),
+    blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
+        attribution: '',
+        opacity: 0.7,
+    	  bounds: [[14, -180], [72, -56]]
+    }),
     blackBlock = L.tileLayer('http://www.justicemap.org/tile/{size}/black/{z}/{x}/{y}.png', {
         attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
     	  size: 'block',
@@ -112,7 +112,7 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
             // "Labels": labels,
             // "Black (race) block groups": blackBlockGroups,
             "Black (race)": blackBlock,
-            // "ENHANCE!!": blackDot,
+            "(ENHANCE!)": blackDot,
             // "POC": nonwhite,
             // "income": income,
             // "WSDEs": markers
