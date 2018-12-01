@@ -15,7 +15,7 @@ var darkmatter = L.tileLayer.provider('CartoDB.DarkMatter'),
     //     opacity: 0.6,
     // 	  bounds: [[14, -180], [72, -56]]
     // }),
-    blackDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
+    racialDot = L.tileLayer('http://demographics.virginia.edu/DotMap/tiles4/{z}/{x}/{y}.png', {
         attribution: '',
         opacity: 0.7,
     	  bounds: [[14, -180], [72, -56]]
@@ -44,7 +44,7 @@ var markerStyle = L.geoJson(null, {
     }
 });
 
-var legendHtml = `<div style="font-size: 0.74em; width: auto; min-height: 112px; max-height: none; height: auto;"><div font-size:0.9em; width:90px; vertical-align:top;"></div>
+var blockLegendHtml = `<div style="font-size: 0.74em; width: auto; min-height: 112px; max-height: none; height: auto;"><div font-size:0.9em; width:90px; vertical-align:top;"></div>
 <div style="padding:2px;" ><span id="color_0" style="background:#ffffcc; width:10px; height:10px;">
    &nbsp;&nbsp;&nbsp;&nbsp;</span><span> 0 - 1%</span></div><div style="padding:2px;"><span id="color_1" style="background:#ffeda0; width:10px; height:10px;">
    &nbsp;&nbsp;&nbsp;&nbsp;</span><span> 1 - 2.5%</span></div><div style="padding:2px;"><span id="color_2" style="background:#fed976; width:10px; height:10px;">
@@ -56,6 +56,8 @@ var legendHtml = `<div style="font-size: 0.74em; width: auto; min-height: 112px;
    &nbsp;&nbsp;&nbsp;&nbsp;</span><span> 47 - 79%</span></div><div style="padding:2px;"><span id="color_8" style="background:#800026; width:10px; height:10px;">
    &nbsp;&nbsp;&nbsp;&nbsp;</span><span> 79 - 100%</span></div>
 </div>`;
+
+var dotLegendHtml = `<img src="http://demographics.virginia.edu/DotMap/CensusMapLegend2.png">`;
 
 // var blackBlockGroupsLegend = L.control.htmllegend({
 //   position: 'bottomright',
@@ -77,7 +79,19 @@ var blackBlockLegend = L.control.htmllegend({
   legends: [{
             name: 'Black (race) </br> pop. density',
             layer: blackBlock,
-            elements: [{ html: legendHtml }]
+            elements: [{ html: blockLegendHtml }]
+    }]
+});
+
+var racialDotLegend = L.control.htmllegend({
+  position: 'bottomright',
+  // collapsedOnInit: true,
+  // defaultOpacity: 0.1,
+  disableVisibilityControls: true,
+  legends: [{
+            name: 'Dot legend',
+            layer: racialDot,
+            elements: [{ html: dotLegendHtml }]
     }]
 });
 
@@ -112,7 +126,7 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
             // "Labels": labels,
             // "Black (race) block groups": blackBlockGroups,
             "Black (race)": blackBlock,
-            "(ENHANCE!)": blackDot,
+            "(ENHANCE!)": racialDot,
             // "POC": nonwhite,
             // "income": income,
             // "WSDEs": markers
@@ -134,5 +148,6 @@ var wsdeLayer = omnivore.csv('data/locations.csv', null, markerStyle)
         L.control.layers(baseMaps, overlayMaps).addTo(mymap);
         // mymap.addControl(blackBlockGroupsLegend);
         mymap.addControl(blackBlockLegend);
+        mymap.addControl(racialDotLegend);
         mymap.addControl(controlSearch);
     });
